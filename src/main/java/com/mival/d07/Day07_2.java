@@ -55,8 +55,6 @@ public class Day07_2 {
             System.err.print(ioException);
         }
         if (input.size() == 0) throw new Error("Input file is empty");
-        // needed for conversion between [row, col] position and integer position
-        int lineLength = input.getFirst().length();
         // position of starting point
         int row = 0;
         Integer col = input.get(row).indexOf('S', 0);
