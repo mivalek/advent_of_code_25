@@ -2,6 +2,7 @@ package com.mival.d11;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,36 +11,23 @@ import com.mival.utils.Util;
 
 
 public class Day11_1 {
-    static Map<String, Node> data;
+    static Map<String, String[]> data;
     static Map<String, Long> cache = new HashMap<>();
-    static class Node {
-        String label;
-        List<Node> children;
 
-        public Node(String label) {
-            this.label = label;
-            children = new ArrayList<>();
+    public static long dfs(String from, String parentLabel) {
+        if (cache.containsKey(from)) {
+            return cache.get(from);
         }
-
-        public void addChild(Node child) {
-            children.add(child);
-        }
-    }
-
-    public static long dfs(Node startNode, String parentLabel) {
-        String label = startNode.label;
-        if (cache.containsKey(label)) {
-            return cache.get(label);
-        }
-        if (label.equals("out")) {
+        if (from.equals("out")) {
                 cache.put(parentLabel, 1L);
                 return 1;
         }
-        long out = startNode.children
+        String children[] = data.get(from);
+        long out = Arrays.asList(children)
                     .stream()
-                    .map(x -> dfs(x, label))
+                    .map(x -> dfs(x, from))
                     .reduce(0L, Long::sum);
-        cache.put(label, out);
+        cache.put(from, out);
         return out;
     }
     
@@ -56,18 +44,11 @@ public class Day11_1 {
         data = new HashMap<>();
         for (String line: input) {
             String[] elems = line.split(": ");
-            String p = elems[0];
-            boolean isP = data.containsKey(p);
-            Node parent = isP ? data.get(p) : new Node(elems[0]);
-            if (!isP) data.put(elems[0], parent);
-            for (String c: elems[1].split(" ")) {
-                boolean isC = data.containsKey(c);
-                Node child = isC ? data.get(c) : new Node(c);
-                parent.addChild(child);
-                if (!isC) data.put(c, child);
-            }
+            String parent = elems[0];
+            String[] children = elems[1].split(" ");
+            data.put(parent, children);
         }
-        long res = dfs(data.get("you"), null);
+        long res = dfs("you", null);
         System.out.println(res);
     }
 }
