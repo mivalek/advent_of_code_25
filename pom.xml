@@ -26,6 +26,13 @@
     <jacoco.unit-tests.limit.method-complexity>5</jacoco.unit-tests.limit.method-complexity>
   </properties>
   <dependencies>
+
+    <dependency>
+      <groupId>org.ojalgo</groupId>
+      <artifactId>ojalgo</artifactId>
+      <version>55.2.0</version>
+    </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
